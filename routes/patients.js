@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
         if (patient) {
             res.json(patient);
         } else {
-            res.status(404).send('Patient nicht gefunden');
+            res.status(404).send('Patient not found');
         }
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -38,7 +38,7 @@ router.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id;
         await patientModel.deletePatient(id);
-        res.status(200).json({ message: 'Patient gelöscht' });
+        res.status(200).json({ message: 'Patient deleted' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

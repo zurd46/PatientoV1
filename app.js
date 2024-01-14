@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 // Routen
 app.get('/', (req, res) => {
-    res.send('Willkommen zur Patientenverwaltungs-App');
+    res.send('Welcome to the patient management app');
 });
 
 // Verwenden Sie die Patientenrouten
@@ -22,5 +22,5 @@ app.use('/patients', patientRoutes);
 // Server starten
 const PORT = process.env.PORT || 3000; // Port 3000 oder Umgebungsvariable, falls festgelegt
 app.listen(PORT, () => {
-    console.log(`Server läuft auf Port ${PORT}`);
+    console.log(`Server runs on http://localhost:${PORT}`);
 });
