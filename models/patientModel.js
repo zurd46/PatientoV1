@@ -2,9 +2,9 @@ const db = require('../config/dbConfig');
 
 async function addPatient(patientData) {
     return new Promise((resolve, reject) => {
-        const { name, lastname, age, ahv, address, plz, city } = patientData;
-        const sql = `INSERT INTO patients (name, lastname, age, ahv, address, plz, city) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-        db.run(sql, [name, lastname, age, ahv, address, plz, city], function (err) {
+        const { name, lastname, age, birthdate, ahv, address, plz, city } = patientData;
+        const sql = `INSERT INTO patients (name, lastname, age, birthdate, ahv, address, plz, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        db.run(sql, [name, lastname, age, birthdate, ahv, address, plz, city], function (err) {
             if (err) {
                 reject(err);
             } else {

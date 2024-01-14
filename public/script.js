@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, lastname, age, ahv, address, plz, city })
+            body: JSON.stringify({ name, lastname, age, birthdate, ahv, address, plz, city })
         })
             .then(response => response.json())
             .then(data => {
@@ -54,9 +54,9 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div class="card text-dark">
                                 <div class="card-body">
                                     <h5 class="card-title">${patient.name} ${patient.lastname}</h5>
-                                    <p class="card-text">Alter: ${patient.age}</p>
-                                    <p class="card-text">AHV Nummer: ${patient.ahv}</p>
-                                    <p class="card-text"><small class="text-muted">Erstellt am: ${createdDate}</small></p> <!-- Use createdDate variable -->
+                                    <p class="card-text">Age: ${patient.age}</p>
+                                    <p class="card-text">AHV: ${patient.ahv}</p>
+                                    <p class="card-text"><small class="text-muted">Created on: ${createdDate}</small></p> <!-- Use createdDate variable -->
                                     <button class="edit-btn btn btn-secondary btn-sm" data-id="${patient.id}"><i class="fas fa-pencil-alt"></i></button>
                                     <button class="delete-btn btn btn-danger btn-sm" data-id="${patient.id}"><i class="fas fa-trash-alt"></i></button>
                                 </div>  
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     patientsContainer.innerHTML += patientCard;
                 });
             })
-            .catch(error => console.error('Fehler:', error));
+            .catch(error => console.error('Error:', error));
     }
     // Function to fill edit form with patient data
     function fillEditFormWithPatientData(patientId) {
@@ -88,22 +88,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to handle patient deletion
     function handleDeletePatient(patientId) {
-        if (confirm('Sind Sie sicher, dass Sie diesen Patienten löschen möchten?')) {
+        if (confirm('Are you sure you want to delete this patient?')) {
             fetch(`/patients/${patientId}`, {
                 method: 'DELETE'
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Fehler beim Löschen des Patienten');
+                        throw new Error('Error when deleting the patient');
                     }
                     return response.json();
                 })
                 .then(() => {
-                    alert('Patient erfolgreich gelöscht');
+                    alert('Patient successfully deleted');
                     fetchPatients();
                 })
                 .catch(error => {
-                    console.error('Fehler:', error);
+                    console.error('Error:', error);
                 });
         }
     }
