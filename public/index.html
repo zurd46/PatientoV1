@@ -27,83 +27,108 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="patientModalLabel">Neuen Patienten hinzufügen</h5>
-                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Schließen"><i class="fas fa-times"></i></button>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Schließen">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <form id="patientForm">
-                            <div class="form-group">
-                                <label for="patientName">Name</label>
-                                <input type="text" class="form-control" id="patientName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="patientLastname">Nachname</label>
-                                <input type="text" class="form-control" id="patientLastname" required>
+                            <!-- Vorname und Nachname -->
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="patientName">Vorname</label>
+                                    <input type="text" class="form-control" id="patientName" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="patientLastname">Nachname</label>
+                                    <input type="text" class="form-control" id="patientLastname" required>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="patientAge">Alter</label>
                                 <input type="number" class="form-control" id="patientAge" required>
                             </div>
+
+                            <!-- Weitere Felder -->
                             <div class="form-group">
                                 <label for="patientAddress">Adresse</label>
                                 <input type="text" class="form-control" id="patientAddress" required>
                             </div>
-                            <div class="form-group">
-                                <label for="patientPLZ">PLZ</label>
-                                <input type="text" class="form-control" id="patientPLZ" required>
+
+                            <!-- PLZ und Stadt -->
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="patientPLZ">PLZ</label>
+                                    <input type="text" class="form-control" id="patientPLZ" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="patientCity">Stadt</label>
+                                    <input type="text" class="form-control" id="patientCity" required>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="patientCity">Stadt</label>
-                                <input type="text" class="form-control" id="patientCity" required>
-                            </div>
+
                             <button type="submit" class="btn btn-primary">Speichern</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Bootstrap Modal für das Bearbeiten von Patienten -->
-    <div class="modal fade text-dark" id="editPatientModal" tabindex="-1" role="dialog" aria-labelledby="editPatientModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editPatientModalLabel">Patienten bearbeiten</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Schließen"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editPatientForm">
-                        <input type="hidden" id="editPatientId">
-                        <div class="form-group">
-                            <label for="editPatientName">Name</label>
-                            <input type="text" class="form-control" id="editPatientName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editPatientLastname">Nachname</label>
-                            <input type="text" class="form-control" id="editPatientLastname" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editPatientAge">Alter</label>
-                            <input type="number" class="form-control" id="editPatientAge" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editPatientAddress">Adresse</label>
-                            <input type="text" class="form-control" id="editPatientAddress" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editPatientPLZ">PLZ</label>
-                            <input type="text" class="form-control" id="editPatientPLZ" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editPatientCity">Stadt</label>
-                            <input type="text" class="form-control" id="editPatientCity" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Änderungen speichern</button>
-                    </form>
+        <div class="modal fade text-dark" id="editPatientModal" tabindex="-1" role="dialog" aria-labelledby="editPatientModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editPatientModalLabel">Patienten bearbeiten</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Schließen">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editPatientForm">
+                            <input type="hidden" id="editPatientId">
+        
+                            <!-- Vorname und Nachname -->
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="editPatientName">Vorname</label>
+                                    <input type="text" class="form-control" id="editPatientName" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="editPatientLastname">Nachname</label>
+                                    <input type="text" class="form-control" id="editPatientLastname" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editPatientAge">Alter</label>
+                                <input type="number" class="form-control" id="editPatientAge" required>
+                            </div>
+        
+                            <!-- Weitere Felder -->
+                            <div class="form-group">
+                                <label for="editPatientAddress">Adresse</label>
+                                <input type="text" class="form-control" id="editPatientAddress" required>
+                            </div>
+        
+                            <!-- PLZ und Stadt -->
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="editPatientPLZ">PLZ</label>
+                                    <input type="text" class="form-control" id="editPatientPLZ" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="editPatientCity">Stadt</label>
+                                    <input type="text" class="form-control" id="editPatientCity" required>
+                                </div>
+                            </div>
+        
+                            <button type="submit" class="btn btn-primary">Änderungen speichern</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        
+
 
     <!-- Einbindung von Bootstrap und jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
