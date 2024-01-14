@@ -11,6 +11,8 @@ const db = new sqlite3.Database('./patient_db.sqlite', (err) => {
             name TEXT, 
             lastname Text,
             age INTEGER, 
+            birthdate DATE,
+            ahv TEXT,
             address TEXT,
             plz INTEGER,
             city Text

@@ -20,5 +20,28 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.get('/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const patient = await patientModel.getPatientById(id);
+        if (patient) {
+            res.json(patient);
+        } else {
+            res.status(404).send('Patient nicht gefunden');
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        await patientModel.deletePatient(id);
+        res.status(200).json({ message: 'Patient gelöscht' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 module.exports = router;

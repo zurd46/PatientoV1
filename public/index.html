@@ -7,6 +7,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <script type="text/JavaScript" src="script.js"></script>
 </head>
 <body class="bg-dark text-white">
     <div class="container mt-5">
@@ -45,8 +47,12 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="patientAge">Alter</label>
-                                <input type="number" class="form-control" id="patientAge" required>
+                                <label for="patientBirthdate">Geburtsdatum</label>
+                                <input type="date" class="form-control" id="patientBirthdate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="patientAge">AHV Nummer</label>
+                                <input type="number" class="form-control" id="patientAHV" required>
                             </div>
 
                             <!-- Weitere Felder -->
@@ -99,8 +105,12 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="editPatientAge">Alter</label>
-                                <input type="number" class="form-control" id="editPatientAge" required>
+                                <label for="editPatientBirthdate">Geburtsdatum</label>
+                                <input type="date" class="form-control" id="editPatientBirthdate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editPatient">AHV Nummer</label>
+                                <input type="number" class="form-control" id="editPatientAHV" required>
                             </div>
         
                             <!-- Weitere Felder -->
@@ -134,102 +144,3 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <!-- JavaScript für das Erfassen und Senden von Patientendaten sowie das Anzeigen der Patienten-Cards -->
-<script>
-    document.getElementById('patientForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // Sammeln der Patientendaten aus dem Formular
-        const name = document.getElementById('patientName').value;
-        const lastname = document.getElementById('patientLastname').value;
-        const age = document.getElementById('patientAge').value;
-        const address = document.getElementById('patientAddress').value;
-        const plz = document.getElementById('patientPLZ').value;
-        const city = document.getElementById('patientCity').value;
-
-        // Senden der Daten mit einer POST-Anfrage
-        fetch('/patients', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, lastname, age, address, plz, city })
-        })
-        .then(response => response.json())
-        .then(data => {
-            $('#patientModal').modal('hide');
-            document.getElementById('patientForm').reset();
-            fetchPatients(); // Nach dem Hinzufügen eines neuen Patienten die Liste aktualisieren
-        })
-        .catch((error) => {
-            console.error('Fehler:', error);
-        });
-    });
-
-    function fetchPatients() {
-        fetch('/patients')
-            .then(response => response.json())
-            .then(patients => {
-                const patientsContainer = document.getElementById('patientsContainer');
-                patientsContainer.innerHTML = ''; // Vorhandene Inhalte löschen
-                patients.forEach(patient => {
-                    const patientCard = `
-                    <div class="col-md-4 mb-3">
-                        <div class="card text-dark">
-                            <div class="card-body">
-                                <h5 class="card-title">${patient.name} ${patient.lastname}</h5>
-                                <p class="card-text">Alter: ${patient.age}</p>
-                                <p class="card-text">Adresse: ${patient.address}, ${patient.plz} ${patient.city}</p>
-                                <p class="card-text"><small class="text-muted">Erstellt am: ${patient.created_at}</small></p>
-                                <button class="edit-btn btn btn-secondary btn-sm" data-id="${patient.id}"><i class="fas fa-pencil-alt"></i></button>
-                                <button class="delete-btn btn btn-danger btn-sm" data-id="${patient.id}"><i class="fas fa-trash-alt"></i></button>
-                            </div>  
-                        </div>
-                    </div>`;
-                    patientsContainer.innerHTML += patientCard;
-                });
-            })
-            .catch(error => console.error('Fehler:', error));
-    }
-
-    document.addEventListener('click', function(e) {
-        if (e.target && e.target.classList.contains('edit-btn')) {
-            const patientId = e.target.getAttribute('data-id');
-            // Hier Code zum Laden der Patientendaten basierend auf der ID
-            // und zum Befüllen des Bearbeitungsformulars
-
-            $('#editPatientModal').modal('show');
-        }
-    });
-
-    document.addEventListener('click', function(e) {
-    if (e.target && e.target.classList.contains('edit-btn')) {
-        const patientId = e.target.getAttribute('data-id');
-        // Funktion zum Abrufen der Patientendaten und Befüllen des Formulars
-        fillEditFormWithPatientData(patientId);
-
-        $('#editPatientModal').modal('show');
-    }
-});
-
-function fillEditFormWithPatientData(patientId) {
-    // Hier müssen Sie die Patientendaten abrufen. Dies kann eine Anfrage an Ihren Server sein.
-    // Zum Beispiel:
-    fetch(`/patients/${patientId}`)
-        .then(response => response.json())
-        .then(patientData => {
-            document.getElementById('editPatientId').value = patientId;
-            document.getElementById('editPatientName').value = patientData.name;
-            document.getElementById('editPatientLastname').value = patientData.lastname;
-            document.getElementById('editPatientAge').value = patientData.age;
-            document.getElementById('editPatientAddress').value = patientData.address;
-            document.getElementById('editPatientPLZ').value = patientData.plz;
-            document.getElementById('editPatientCity').value = patientData.city;
-        })
-        .catch(error => console.error('Fehler beim Abrufen der Patientendaten:', error));
-}
-
-    // Rufen Sie die Funktion auf, wenn die Seite geladen wird
-    document.addEventListener('DOMContentLoaded', fetchPatients);
-</script>
