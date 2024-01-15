@@ -21,13 +21,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const address = document.getElementById('patientAddress').value;
         const plz = document.getElementById('patientPLZ').value;
         const city = document.getElementById('patientCity').value;
-
+        const status = document.getElementById('editPatientStatus').value; // Hier wird der ausgewählte Status abgerufen
+    
         fetch('/patients', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, lastname, age, birthdate, ahv, address, plz, city })
+            body: JSON.stringify({ name, lastname, age, birthdate, ahv, address, plz, city, status }) // Status wird in die Anforderung aufgenommen
         })
             .then(response => response.json())
             .then(data => {
@@ -80,16 +81,22 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(`/patients/${patientId}`)
             .then(response => response.json())
             .then(patientData => {
+                // Setzen der Werte in das Bearbeitungsformular
                 document.getElementById('editPatientId').value = patientId;
                 document.getElementById('editPatientName').value = patientData.name;
                 document.getElementById('editPatientLastname').value = patientData.lastname;
-                // Set the birthdate value correctly
-                const birthdate = patientData.birthdate ? new Date(patientData.birthdate).toISOString().split('T')[0] : '';
-                document.getElementById('editPatientBirthdate').value = birthdate;
+                document.getElementById('editPatientBirthdate').value = patientData.birthdate ? new Date(patientData.birthdate).toISOString().split('T')[0] : '';
                 document.getElementById('editPatientAHV').value = patientData.ahv;
                 document.getElementById('editPatientAddress').value = patientData.address;
                 document.getElementById('editPatientPLZ').value = patientData.plz;
                 document.getElementById('editPatientCity').value = patientData.city;
+
+                // Patientenstatus im Dropdown-Menü setzen oder auf leeren Wert setzen
+                if (patientData.status) {
+                    document.getElementById('editPatientStatus').value = patientData.status;
+                } else {
+                    document.getElementById('editPatientStatus').value = ''; // Status ist null, daher leeren Wert
+                }
             })
             .catch(error => console.error('Fehler beim Abrufen der Patientendaten:', error));
     }

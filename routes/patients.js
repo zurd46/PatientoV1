@@ -44,4 +44,15 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+router.put('/patient/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { status } = req.body; // Nehmen Sie den Status aus dem Request Body
+        await patientModel.updatePatientStatus(id, status);
+        res.json({ message: 'Patient status successfully updated' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;
