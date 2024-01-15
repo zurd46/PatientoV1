@@ -48,7 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const patientsContainer = document.getElementById('patientsContainer');
                 patientsContainer.innerHTML = '';
                 patients.forEach(patient => {
-                    const createdDate = patient.created_at ? new Date(patient.created_at).toLocaleDateString() : 'N/A'; // Check if created_at is defined
+                    // Verwenden Sie formatDate, um das Erstellungsdatum und die Uhrzeit zu formatieren
+                    const createdDate = patient.created_at ? formatDate(patient.created_at) : 'No Date';
                     const patientCard = `
                         <div class="col-md-4 mb-3">
                             <div class="card text-dark">
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     <h5 class="card-title">${patient.name} ${patient.lastname}</h5>
                                     <p class="card-text">Age: ${patient.age}</p>
                                     <p class="card-text">AHV: ${patient.ahv}</p>
-                                    <p class="card-text"><small class="text-muted">Created on: ${createdDate}</small></p> <!-- Use createdDate variable -->
+                                    <p class="card-text"><small class="text-muted">Created on: ${createdDate}</small></p>
                                     <button class="edit-btn btn btn-secondary btn-sm" data-id="${patient.id}"><i class="fas fa-pencil-alt"></i></button>
                                     <button class="delete-btn btn btn-danger btn-sm" data-id="${patient.id}"><i class="fas fa-trash-alt"></i></button>
                                 </div>  
@@ -67,6 +68,13 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => console.error('Error:', error));
     }
+
+    // Ihre vorhandene formatDate-Funktion
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    }
+
     // Function to fill edit form with patient data
     function fillEditFormWithPatientData(patientId) {
         fetch(`/patients/${patientId}`)
@@ -116,11 +124,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Event listener for clicking on edit and delete buttons
     document.addEventListener('click', function (event) {
-        if (event.target && event.target.classList.contains('edit-btn')) {
-            const patientId = event.target.getAttribute('data-id');
-            fillEditFormWithPatientData(patientId);
-            $('#editPatientModal').modal('show');
-        } else if (event.target && event.target.classList.contains('delete-btn')) {
+        let targetElement = event.target;
+    
+        // Gehe durch die übergeordneten Elemente bis zum Dokumenten-Wurzelelement
+        while (targetElement != null) {
+            if (targetElement.classList.contains('edit-btn')) {
+                // Die ID des Patienten aus dem data-id Attribut des Buttons holen
+                const patientId = targetElement.getAttribute('data-id');
+                fillEditFormWithPatientData(patientId);
+                $('#editPatientModal').modal('show');
+                break; // Beendet die Schleife, nachdem das richtige Element gefunden wurde
+            }
+            targetElement = targetElement.parentElement;
+        }
+    
+        // Ähnliche Logik für den Löschbutton
+        if (event.target && event.target.classList.contains('delete-btn')) {
             const patientId = event.target.getAttribute('data-id');
             handleDeletePatient(patientId);
         }

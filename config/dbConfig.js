@@ -9,13 +9,14 @@ const db = new sqlite3.Database('./patient_db.sqlite', (err) => {
         db.run(`CREATE TABLE IF NOT EXISTS patients (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT, 
-            lastname Text,
+            lastname TEXT,
             age INTEGER, 
-            birthdate Text,
+            birthdate TEXT,
             ahv TEXT,
             address TEXT,
             plz INTEGER,
-            city Text
+            city TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);
     }
 });
