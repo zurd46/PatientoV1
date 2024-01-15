@@ -16,7 +16,9 @@ const db = new sqlite3.Database('./patient_db.sqlite', (err) => {
             address TEXT,
             plz INTEGER,
             city TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            status TEXT, 
+            status_updated_at DATETIME
         )`);
     }
 });

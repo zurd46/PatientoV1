@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <script type="text/JavaScript" src="scripts.js"></script>
+    <script type="text/JavaScript" src="/plugins/patient-status.js"></script>
+
 </head>
 <body class="bg-dark text-white">
     <div class="container mt-5">
@@ -82,6 +84,8 @@
             </div>
         </div>
 
+        <!-- Edit patient modal -->
+
         <div class="modal fade text-dark" id="editPatientModal" tabindex="-1" role="dialog" aria-labelledby="editPatientModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -131,6 +135,14 @@
                                     <label for="editPatientCity">City</label>
                                     <input type="text" class="form-control" id="editPatientCity" required>
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editPatientStatus">Status</label>
+                                <select class="form-control" id="editPatientStatus">
+                                    <option value="stable">Stable</option>
+                                    <option value="unstable">Unstable</option>
+                                    <option value="not-definable">Not definable</option>
+                                </select>
                             </div>
                             <div class="modal-footer d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary">Save changes</button>

@@ -134,17 +134,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 fillEditFormWithPatientData(patientId);
                 $('#editPatientModal').modal('show');
                 break; // Beendet die Schleife, nachdem das richtige Element gefunden wurde
+            } else if (targetElement.classList.contains('delete-btn')) {
+                // Die ID des Patienten aus dem data-id Attribut des Buttons holen
+                const patientId = targetElement.getAttribute('data-id');
+                handleDeletePatient(patientId);
+                break; // Beendet die Schleife, nachdem das richtige Element gefunden wurde
             }
             targetElement = targetElement.parentElement;
-        }
-    
-        // Ähnliche Logik für den Löschbutton
-        if (event.target && event.target.classList.contains('delete-btn')) {
-            const patientId = event.target.getAttribute('data-id');
-            handleDeletePatient(patientId);
         }
     });
 
     // Fetch and display patients when the page loads
     fetchPatients();
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    var patientStatus = new PatientStatus();
 });
