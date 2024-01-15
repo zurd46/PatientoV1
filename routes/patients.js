@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const patientModel = require('../models/patientModel'); // Stellen Sie sicher, dass der Pfad korrekt ist
+const patientModel = require('../models/patientModel'); // Überprüfen Sie den Pfad
 
+// Route zum Abrufen aller Patienten
 router.get('/', async (req, res) => {
     try {
-        const patients = await patientModel.getAllPatients(); // Hier wird die Funktion aufgerufen
+        const patients = await patientModel.getAllPatients();
         res.json(patients);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
 
+// Route zum Hinzufügen eines neuen Patienten
 router.post('/', async (req, res) => {
     try {
         const newPatient = await patientModel.addPatient(req.body);
@@ -20,6 +22,7 @@ router.post('/', async (req, res) => {
     }
 });
 
+// Route zum Abrufen eines Patienten nach ID
 router.get('/:id', async (req, res) => {
     try {
         const id = req.params.id;
@@ -34,6 +37,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// Route zum Löschen eines Patienten
 router.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id;
@@ -44,14 +48,15 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.put('/patient/:id', async (req, res) => {
+// Route zum Aktualisieren des Status eines Patienten
+router.put('/:id/status', async (req, res) => {
     try {
         const id = req.params.id;
-        const { status } = req.body; // Nehmen Sie den Status aus dem Request Body
-        await patientModel.updatePatientStatus(id, status);
-        res.json({ message: 'Patient status successfully updated' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+        const { status } = req.body;
+        const result = await patientModel.updatePatientStatus(id, status);
+        res.json(result);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 });
 

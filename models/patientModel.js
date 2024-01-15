@@ -78,6 +78,7 @@ async function updatePatientStatus(id, status) {
                 });
             }
         });
+        console.log("Updating status for patient ID", id, "to", status);
     });
 }
 

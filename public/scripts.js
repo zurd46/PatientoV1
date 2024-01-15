@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Function to calculate age from birthdate
+    // Funktion zur Berechnung des Alters aus dem Geburtsdatum
     function calculateAge(birthdate) {
         const birthDate = new Date(birthdate);
         const today = new Date();
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return age;
     }
 
-    // Function to handle form submission
+    // Funktion zur Verarbeitung der Formularübermittlung
     function handleSubmitPatientForm() {
         const name = document.getElementById('patientName').value;
         const lastname = document.getElementById('patientLastname').value;
@@ -21,14 +21,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const address = document.getElementById('patientAddress').value;
         const plz = document.getElementById('patientPLZ').value;
         const city = document.getElementById('patientCity').value;
-        const status = document.getElementById('editPatientStatus').value; // Hier wird der ausgewählte Status abgerufen
-    
+        //const status = document.getElementById('patientStatus').value; // Ausgewählter Status
+
         fetch('/patients', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, lastname, age, birthdate, ahv, address, plz, city, status }) // Status wird in die Anforderung aufgenommen
+            body: JSON.stringify({ name, lastname, age, birthdate, ahv, address, plz, city, status })
         })
             .then(response => response.json())
             .then(data => {
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // Function to fetch and display patients
+    // Funktion zum Abrufen und Anzeigen von Patienten
     function fetchPatients() {
         fetch('/patients')
             .then(response => response.json())
@@ -49,59 +49,69 @@ document.addEventListener('DOMContentLoaded', function () {
                 const patientsContainer = document.getElementById('patientsContainer');
                 patientsContainer.innerHTML = '';
                 patients.forEach(patient => {
-                    // Verwenden Sie formatDate, um das Erstellungsdatum und die Uhrzeit zu formatieren
                     const createdDate = patient.created_at ? formatDate(patient.created_at) : 'No Date';
                     const patientCard = `
-                        <div class="col-md-4 mb-3">
-                            <div class="card text-dark">
-                                <div class="card-body">
-                                    <h5 class="card-title">${patient.name} ${patient.lastname}</h5>
-                                    <p class="card-text">Age: ${patient.age}</p>
-                                    <p class="card-text">AHV: ${patient.ahv}</p>
-                                    <p class="card-text"><small class="text-muted">Created on: ${createdDate}</small></p>
-                                    <button class="edit-btn btn btn-secondary btn-sm" data-id="${patient.id}"><i class="fas fa-pencil-alt"></i></button>
-                                    <button class="delete-btn btn btn-danger btn-sm" data-id="${patient.id}"><i class="fas fa-trash-alt"></i></button>
-                                </div>  
-                            </div>
-                        </div>`;
+                    <div class="col-md-4 mb-3">
+                        <div class="card text-dark">
+                            <div class="card-body">
+                                <h5 class="card-title">${patient.name} ${patient.lastname}</h5>
+                                <p class="card-text">Age: ${patient.age}</p>
+                                <p class="card-text">AHV: ${patient.ahv}</p>
+                                <p class="card-text"><small class="text-muted">Created on: ${createdDate}</small></p>
+                                <button class="edit-btn btn btn-secondary btn-sm" data-id="${patient.id}"><i class="fas fa-pencil-alt"></i></button>
+                                <button class="delete-btn btn btn-danger btn-sm" data-id="${patient.id}"><i class="fas fa-trash-alt"></i></button>
+                            </div>  
+                        </div>
+                    </div>`;
                     patientsContainer.innerHTML += patientCard;
                 });
             })
             .catch(error => console.error('Error:', error));
     }
 
-    // Ihre vorhandene formatDate-Funktion
+    // Funktion zum Formatieren von Datumsangaben
     function formatDate(dateString) {
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         return new Date(dateString).toLocaleDateString(undefined, options);
     }
 
-    // Function to fill edit form with patient data
+    // Funktion zum Ausfüllen des Bearbeitungsformulars mit Patientendaten
     function fillEditFormWithPatientData(patientId) {
         fetch(`/patients/${patientId}`)
             .then(response => response.json())
             .then(patientData => {
-                // Setzen der Werte in das Bearbeitungsformular
-                document.getElementById('editPatientId').value = patientId;
-                document.getElementById('editPatientName').value = patientData.name;
-                document.getElementById('editPatientLastname').value = patientData.lastname;
-                document.getElementById('editPatientBirthdate').value = patientData.birthdate ? new Date(patientData.birthdate).toISOString().split('T')[0] : '';
-                document.getElementById('editPatientAHV').value = patientData.ahv;
-                document.getElementById('editPatientAddress').value = patientData.address;
-                document.getElementById('editPatientPLZ').value = patientData.plz;
-                document.getElementById('editPatientCity').value = patientData.city;
+                // Überprüfen, ob jedes Element existiert, bevor Sie versuchen, seinen Wert zu setzen
+                const editPatientIdElem = document.getElementById('editPatientId');
+                if (editPatientIdElem) editPatientIdElem.value = patientId;
+    
+                const editPatientNameElem = document.getElementById('editPatientName');
+                if (editPatientNameElem) editPatientNameElem.value = patientData.name;
+    
+                const editPatientLastnameElem = document.getElementById('editPatientLastname');
+                if (editPatientLastnameElem) editPatientLastnameElem.value = patientData.lastname;
+    
+                const editPatientBirthdateElem = document.getElementById('editPatientBirthdate');
+                if (editPatientBirthdateElem) editPatientBirthdateElem.value = patientData.birthdate ? new Date(patientData.birthdate).toISOString().split('T')[0] : '';
+    
+                const editPatientAHVElem = document.getElementById('editPatientAHV');
+                if (editPatientAHVElem) editPatientAHVElem.value = patientData.ahv;
+    
+                const editPatientAddressElem = document.getElementById('editPatientAddress');
+                if (editPatientAddressElem) editPatientAddressElem.value = patientData.address;
 
-                // Patientenstatus im Dropdown-Menü setzen oder auf leeren Wert setzen
-                if (patientData.status) {
-                    document.getElementById('editPatientStatus').value = patientData.status;
-                } else {
-                    document.getElementById('editPatientStatus').value = ''; // Status ist null, daher leeren Wert
-                }
+                const editPatientPLZElem = document.getElementById('editPatientPLZ');
+                if (editPatientPLZElem) editPatientPLZElem.value = patientData.plz;
+        
+                const editPatientCityElem = document.getElementById('editPatientCity');
+                if (editPatientCityElem) editPatientCityElem.value = patientData.city;
+        
+                const editPatientStatusElem = document.getElementById('editPatientStatus');
+                if (editPatientStatusElem) editPatientStatusElem.value = patientData.status ? patientData.status : '';
             })
             .catch(error => console.error('Fehler beim Abrufen der Patientendaten:', error));
-    }
-
-    // Function to handle patient deletion
+        }
+    
+    // Funktion zur Behandlung der Patientenlöschung
     function handleDeletePatient(patientId) {
         if (confirm('Are you sure you want to delete this patient?')) {
             fetch(`/patients/${patientId}`, {
@@ -132,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listener for clicking on edit and delete buttons
     document.addEventListener('click', function (event) {
         let targetElement = event.target;
-    
+
         // Gehe durch die übergeordneten Elemente bis zum Dokumenten-Wurzelelement
         while (targetElement != null) {
             if (targetElement.classList.contains('edit-btn')) {
@@ -155,6 +165,23 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchPatients();
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    var patientStatus = new PatientStatus();
-});
+function handleSubmitEditForm() {
+    const patientId = document.getElementById('editPatientId').value;
+    const updatedStatus = document.getElementById('editPatientStatus').value;
+
+    fetch(`/patients/${patientId}/status`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: updatedStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        $('#editPatientModal').modal('hide');
+        fetchPatients(); // Diese Funktion sollte die aktualisierten Patientendaten abrufen
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
